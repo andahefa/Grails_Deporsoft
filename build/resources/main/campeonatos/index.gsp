@@ -21,9 +21,9 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCamp">Nuevo Campeonato</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoCampeonato">Nuevo Campeonato</button>
             <!--Modal Campeonato-->
-            <div id="modalCamp" class="modal fade" role="dialog">
+            <div id="nuevoCampeonato" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -52,26 +52,34 @@
                     </div>
                 </div>
             </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered" id='tbCampeonatos'>
                     <thead>
+                        <th>Id</th>
                         <th>Nombre Campeonato</th>
                         <th>Cantidad Minima Equipos</th>
                         <th>Fecha Inicio Inscripción</th>
                         <th>Fecha Fin Inscripción</th>
                         <th>Fecha Inicio Campeonato</th>
                         <th>Fecha Fin Campeonato</th>
+                        <th>Edición</th>
                     </thead>
                     <tbody>
                         <g:each in="${listaCampeonatos}" var="lista">
                             <tr>
                                 <td>${lista.id}</td>
-                                <td>${lista.cant_min_equipos}</td>
+                                <td>${lista.nombre}</td>
+                                <td>${lista.cantMinEquipos}</td>
+                                <td>${lista.fechaIniInscrip}</td>
+                                <td>${lista.fechaFinInscrip}</td>
+                                <td>${lista.fechaIniCamp}</td>
+                                <td>${lista.fechaFinInscrip}</td>
+                                <td><input type="button" id="editar" value="Editar" class="btn btn-warning"></td>
                             </tr>
                         </g:each>
                     </tbody>
                 </table>
-          </div>
         </div>
+    </div>
         <!-- footer content -->
     <g:render template="/templates/footer"/>
         <!-- /footer content -->
@@ -89,27 +97,52 @@
         var fechaIniCampeonato = $('#fechaIniCampeonato').val()
         var fechaFinCampeonato = $('#fechaFinCampeonato').val()
         var organizador = $('#organizadorCampeonato').val()
-
-        $.ajax({
-            method:'POST',
-            url:"${createLink(controller:'campeonatos', action:'save')}",
-            data:{
-                name:nameCampeonato
-                cantidadMinimaEquipos:cantMinEquipos
-                fechaInicioInscripcion:fechaIniInscripcion
-                fechaFinInscripcion:fechaFinInscripcion
-                fechaInicioCampeonato:fechaIniCampeonato
-                fechaFinCampeonato:fechaFinCampeonato
-                organizador:organizador
-            },
-            success:function(result){
-                var resultado=result
-            },
-            error:function(status, text, result, xhr) {
-                        console.log(status.responseText)
-            }
-        })
-    }
+        if(nameCampeonato == ''){
+            alert('Debe ingresar el Nombre del campeonato')
+        }
+        else if(cantMinEquipos == ''){
+            alert('Debe ingresar la cantidad minima de equipos')
+        }
+        else if(fechaIniInscripcion == ''){
+            alert('Debe ingresar la fecha de inicio de inscripcion')
+        }
+        else if(fechaFinInscripcion == ''){
+            alert('Debe ingresar la fecha fin de inscripcion')
+        }
+        else if(fechaIniCampeonato == ''){
+            alert('Debe ingresar la fecha de inicio del campeonato')
+        }
+        else if(fechaFinCampeonato == ''){
+            alert('Debe ingresar la fecha fin del campeonato')
+        }
+        else if(organizador == ''){
+            alert('Debe ingresar el organizador')
+        }
+        else{
+            $.ajax({
+                method:'POST',
+                url:"${createLink(controller:'campeonatos', action:'save')}",
+                data:{
+                    name:nameCampeonato,
+                    cantidadMinimaEquipos:cantMinEquipos,
+                    fechaInicioInscripcion:fechaIniInscripcion,
+                    fechaFinInscripcion:fechaFinInscripcion,
+                    fechaInicioCampeonato:fechaIniCampeonato,
+                    fechaFinCampeonato:fechaFinCampeonato,
+                    organizador:organizador
+                },
+                success:function(result){
+                    var resultado=result
+                    if(resultado == '1'){
+                    var newTr = $('<tr><td>'+1+"</td><td>"+nameCampeonato+"</td><td>"+cantMinEquipos+"</td><td>"+fechaIniInscripcion+"</td><td>"+fechaFinInscripcion+"</td><td>"+fechaIniCampeonato+"</td><td>"+fechaFinCampeonato+"</td><td><input type='button' class='btn btn-warning id='editar' value='Editar'></td>")
+                    $('#tbCampeonatos > tbody').append(newTr)
+                    }
+                },
+                error:function(status, text, result, xhr) {
+                            console.log(status.responseText)
+                }
+            })
+    }   }
 </script>
 <asset:javascript src="fastclick.js"/>
 <asset:javascript src="nprogress.js"/>

@@ -3,10 +3,10 @@ package com.model
 class Campeonatos {
 
 String nombre
-Date fechaIniInscrip
-Date fechaFinInscrip
-Date fechaIniCamp
-Date fechaFinCamp
+String fechaIniInscrip
+String fechaFinInscrip
+String fechaIniCamp
+String fechaFinCamp
 Integer cantMinEquipos
 
     static constraints = {
