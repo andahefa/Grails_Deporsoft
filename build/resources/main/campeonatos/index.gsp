@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Nuevo Libro</title>
+	<title>Nuevo Campeonato</title>
 	<asset:stylesheet src="bootstrap.min.css"/>
 	<asset:stylesheet src="font-awesome.min.css"/>
 	<asset:stylesheet src="nprogress.css"/>
@@ -46,7 +46,7 @@
                             <input type="text" class="form-control" id="organizadorCampeonato" >
                         </div>
                         <div class="modal-footer">
-                            <input type="button" class="btn btn-primary" onclick="guardarCampeonato()" value="guardar"></input>
+                            <input type="button" class="btn btn-primary" onclick="guardarCampeonato()" id="saveCampeonato" value="guardar"></input>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                         <th>Fecha Fin Inscripción</th>
                         <th>Fecha Inicio Campeonato</th>
                         <th>Fecha Fin Campeonato</th>
-                        <th>Edición</th>
+                        <th>Editar Registro</th>
                     </thead>
                     <tbody>
                         <g:each in="${listaCampeonatos}" var="lista">
@@ -73,7 +73,7 @@
                                 <td>${lista.fechaFinInscrip}</td>
                                 <td>${lista.fechaIniCamp}</td>
                                 <td>${lista.fechaFinInscrip}</td>
-                                <td><input type="button" id="editar" value="Editar" class="btn btn-warning"></td>
+                                <td><input type="button" id="editar" value="Editar" class="btn btn-warning" onclick="editarCampeonato('${lista.nombre}')"></td>
                             </tr>
                         </g:each>
                     </tbody>
@@ -134,6 +134,7 @@
                 success:function(result){
                     var resultado=result
                     if(resultado == '1'){
+                    $('#nuevoCampeonato').modal('toggle')
                     var newTr = $('<tr><td>'+1+"</td><td>"+nameCampeonato+"</td><td>"+cantMinEquipos+"</td><td>"+fechaIniInscripcion+"</td><td>"+fechaFinInscripcion+"</td><td>"+fechaIniCampeonato+"</td><td>"+fechaFinCampeonato+"</td><td><input type='button' class='btn btn-warning id='editar' value='Editar'></td>")
                     $('#tbCampeonatos > tbody').append(newTr)
                     }
@@ -142,7 +143,11 @@
                             console.log(status.responseText)
                 }
             })
-    }   }
+        }
+    }
+    function editarCampeonato(name){
+        alert("nombre:"+name)
+    }
 </script>
 <asset:javascript src="fastclick.js"/>
 <asset:javascript src="nprogress.js"/>
